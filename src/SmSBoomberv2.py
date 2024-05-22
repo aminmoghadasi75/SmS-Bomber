@@ -14,7 +14,7 @@ class SMSBomber:
     def __init__(self, phone_number, repeat=1):
         self.repeat = repeat
         self.phone_number = phone_number
-        self.service = ChromeService("./chromedriver")
+        self.service = ChromeService("./chromedriver.exe")
         self.driver = webdriver.Chrome(service=self.service)
         self.driver.implicitly_wait(10)  # Set implicit wait
         logging.info("Initialized SMSBomber with phone number: %s and repeat: %d", phone_number, repeat)
