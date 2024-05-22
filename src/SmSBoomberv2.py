@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 import logging
+import os
 
 logging.basicConfig(level=logging.INFO)
 
@@ -14,7 +15,8 @@ class SMSBomber:
     def __init__(self, phone_number, repeat=1):
         self.repeat = repeat
         self.phone_number = phone_number
-        self.service = ChromeService('./chromedriver.exe')
+        chrome_driver_path = os.path.abspath('./chromedriver.exe')
+        self.service = ChromeService(chrome_driver_path)
         self.driver = webdriver.Chrome(service=self.service)
         self.driver.implicitly_wait(10)  # Set implicit wait
         logging.info("Initialized SMSBomber with phone number: %s and repeat: %d", phone_number, repeat)
