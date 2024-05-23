@@ -16,7 +16,7 @@ class SMSBomber:
     def __init__(self, phone_number, repeat=1):
         self.repeat = repeat
         self.phone_number = phone_number
-        self.install_chrome()
+        #self.install_chrome()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-gpu")
