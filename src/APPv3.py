@@ -3,8 +3,6 @@ from SmSBoomberv3 import SMSBomber
 import pickle
 import os
 
-
-
 # Define the user data file and comments file
 USER_DATA_FILE = 'user_data.pkl'
 COMMENTS_FILE = 'comments.pkl'
@@ -51,11 +49,10 @@ if not all(isinstance(user, dict) for user in user_data):
 
 # Ask for username
 if not st.session_state.is_logged_in:
-    
     st.header('Login')
     username = st.text_input('Enter your Instagram ID:')
     login_button = st.button('Login')
-    if login_button :
+    if login_button:
         st.write('Double click on the Login button to continue.')
 
     if login_button:

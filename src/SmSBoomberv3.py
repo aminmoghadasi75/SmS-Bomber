@@ -1,35 +1,26 @@
 from time import sleep
 from tqdm import tqdm
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.os_manager import ChromeType
 import logging
-import os
 
 logging.basicConfig(level=logging.INFO)
-
-options = Options()
-options.add_argument("--disable-gpu")
-options.add_argument("--headless")
-
-def get_driver():
-    return webdriver.Chrome(
-        service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
-        ),
-        options=options,
-    )
 
 class SMSBomber:
     def __init__(self, phone_number, repeat=1):
         self.repeat = repeat
         self.phone_number = phone_number
-        self.driver = get_driver()
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        self.service = ChromeService(ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(service=self.service, options=chrome_options)
         self.driver.implicitly_wait(10)  # Set implicit wait
         logging.info("Initialized SMSBomber with phone number: %s and repeat: %d", phone_number, repeat)
 
@@ -108,13 +99,7 @@ class SMSBomber:
         for _ in tqdm(range(self.repeat), desc="Sending SMS"):
             self.tapsi()
             self.digikala()
-            # self.torob()
             self.snapp()
             self.alibaba()
-            # self.flytoday()
         self.driver.quit()
         logging.info("Finished sending SMS")
-
-if __name__ == "__main__":
-    sms_bomber = SMSBomber(phone_number="1234567890", repeat=3)
-    sms_bomber.run()
