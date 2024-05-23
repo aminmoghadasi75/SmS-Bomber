@@ -19,7 +19,16 @@ class SMSBomber:
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
-        self.service = ChromeService(ChromeDriverManager().install())
+
+        try:
+            chrome_driver_path = ChromeDriverManager().install()
+            if chrome_driver_path is None:
+                raise ValueError("Failed to install ChromeDriver")
+            self.service = ChromeService(chrome_driver_path)
+        except Exception as e:
+            logging.error("Error installing ChromeDriver: %s", str(e))
+            raise
+
         self.driver = webdriver.Chrome(service=self.service, options=chrome_options)
         self.driver.implicitly_wait(10)  # Set implicit wait
         logging.info("Initialized SMSBomber with phone number: %s and repeat: %d", phone_number, repeat)
