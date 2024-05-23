@@ -1,5 +1,5 @@
 import streamlit as st
-from SmSBoomberv2 import SMSBomber
+from SmSBoomberv3 import SMSBomber
 import pickle
 import os
 
