@@ -7,6 +7,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 import logging
+import subprocess
+import os
 
 logging.basicConfig(level=logging.INFO)
 
@@ -14,6 +16,7 @@ class SMSBomber:
     def __init__(self, phone_number, repeat=1):
         self.repeat = repeat
         self.phone_number = phone_number
+        self.install_chrome()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-gpu")
@@ -32,6 +35,14 @@ class SMSBomber:
         self.driver = webdriver.Chrome(service=self.service, options=chrome_options)
         self.driver.implicitly_wait(10)  # Set implicit wait
         logging.info("Initialized SMSBomber with phone number: %s and repeat: %d", phone_number, repeat)
+
+    def install_chrome(self):
+        if not os.path.exists('/usr/bin/google-chrome'):
+            logging.info("Google Chrome not found, installing...")
+            subprocess.run(['wget', 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'], check=True)
+            subprocess.run(['sudo', 'apt-get', 'install', './google-chrome-stable_current_amd64.deb', '-y'], check=True)
+        else:
+            logging.info("Google Chrome is already installed.")
 
     def open_new_tab(self, url):
         logging.info("Opening new tab with URL: %s", url)
